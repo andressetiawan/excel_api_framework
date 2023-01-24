@@ -1,0 +1,9 @@
+Feature: Virtual Account
+
+  Scenario: System able to do payment using Permata Virtual Account
+    Given prepare request data ... passed in 0.000s
+    And set request authentication ... passed in 0.000s
+    When send the request ... passed in 1.866s
+    And do payment ... passed in 2.111s
+    Then do payment check ... passed in 0.155s
+

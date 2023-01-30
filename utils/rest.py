@@ -4,8 +4,13 @@ import json
 class Validation:
     code: int = None
 
-    def response():
-        return Rest.response
+    def response(keys:str=""):
+        result = Rest.response["response"]
+        if(len(keys) > 0):
+            keys = keys.split(".")
+            for key in keys:
+                result = result[key]
+        return result
 
     def statusCode(code):
         assert (code == Validation.code) is True
@@ -13,7 +18,7 @@ class Validation:
     
     def expect(keys:str, string):
         keys = keys.split(".")
-        result = Validation.response()["response"]
+        result = Validation.response()
         for key in keys:
             result = result[key]
         result = str(result)

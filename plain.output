@@ -1,0 +1,57 @@
+Feature: Bank transfer
+
+  Scenario Outline: System able to do payment using Virtual Account -- @1.1 
+    Given prepare request data for "bca" virtual account ... passed in 0.000s
+    And set request authentication ... passed in 0.000s
+    When send bank transfer request ... passed in 0.776s
+    And do payment using "bca" ... passed in 2.674s
+    Then do payment check ... passed in 0.375s
+
+  Scenario Outline: System able to do payment using Virtual Account -- @1.2 
+    Given prepare request data for "bri" virtual account ... passed in 0.000s
+    And set request authentication ... passed in 0.000s
+    When send bank transfer request ... passed in 0.689s
+    And do payment using "bri" ... passed in 2.024s
+    Then do payment check ... passed in 0.257s
+
+  Scenario Outline: System able to do payment using Virtual Account -- @1.3 
+    Given prepare request data for "bni" virtual account ... passed in 0.000s
+    And set request authentication ... passed in 0.000s
+    When send bank transfer request ... passed in 0.703s
+    And do payment using "bni" ... passed in 3.004s
+    Then do payment check ... passed in 0.259s
+
+  Scenario Outline: System able to do payment using Virtual Account -- @1.4 
+    Given prepare request data for "permata" virtual account ... passed in 0.000s
+    And set request authentication ... passed in 0.000s
+    When send bank transfer request ... passed in 1.877s
+    And do payment using "permata" ... passed in 2.012s
+    Then do payment check ... passed in 0.272s
+
+Feature: CIMB Clicks
+
+  Scenario: System able to do payment using CIMB Clicks
+    Given prepare request data for CIMB Clicks ... passed in 0.000s
+    And set request authentication ... passed in 0.000s
+    When send CIMB Clicks request ... passed in 0.421s
+    And do payment using CIMB Clicks ... passed in 2.248s
+    Then do payment check ... passed in 0.261s
+
+Feature: Danamon online
+
+  Scenario: System able to do payment using danamon online
+    Given prepare request data for danamon online payment ... passed in 0.000s
+    And set request authentication ... passed in 0.000s
+    When send danamon online payment request ... passed in 0.389s
+    And do payment using danamon online ... passed in 2.145s
+    Then do payment check ... passed in 0.249s
+
+Feature: Mandiri channel
+
+  Scenario: System able to do payment using mandiri
+    Given prepare request data for mandiri payment ... passed in 0.000s
+    And set request authentication ... passed in 0.000s
+    When send mandiri payment request ... passed in 0.804s
+    And do payment using mandiri ... passed in 2.128s
+    Then do payment check ... passed in 0.265s
+

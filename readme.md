@@ -18,3 +18,17 @@ Run this code
 ```sh
 sh test.sh <test_scenario_file>
 ```
+
+## Test case documentation
+Build-in variables in Request body:
+| Variables | Description | Example | Result |
+| --------- | ----------- | ------- | ------ |
+| {{$uuid}} | Generate random UUID | { "customer_id" : {{$uuid}} } | { "customer_id" : 1234567890 }
+
+Query data for API URL:
+| API URL | Example query data | Result |
+| ------- | ------------------ | ------ |
+| `https://test.com/{{id}}` | { "id":"001" } | https://test.com/001
+| `https://test.com?id={{id}}` | { "id":"001" } | https://test.com?id=001
+| `https://test.com?id={{id}}&name={{name}}` | { "id" : "001", "name" : "test" } | https://test.com?id=001&name=test
+| `https://test.com/id/{{id}}/name/{{name}}` | { "id" : "001", "name" : "test" } | https://test.com/id/001/name/test |

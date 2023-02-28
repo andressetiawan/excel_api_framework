@@ -1,0 +1,25 @@
+.api_title_url {
+  margin: 0;
+}
+
+.dropdown-item {
+  cursor: pointer;
+  margin: 0;
+}
+
+
+.accordion-button:not(.collapsed) {
+  color: black;
+  background-color: transparent;
+}
+
+.accordion-button:not(.collapsed)::after,
+.accordion-button::after {
+  display: none;
+  background-image: none;
+}
+
+.accordion-button:focus {
+  border-color: transparent;
+  box-shadow: none;
+}

@@ -1,8 +1,0 @@
-Feature: Feature name
-
-  Scenario: Scenario name
-    Given Prepare testing request data and headers ... passed in 0.000s
-    When Client send request data ... passed in 0.322s
-    Then System checks json schema ... passed in 0.007s
-    And System generate report ... passed in 0.031s
-

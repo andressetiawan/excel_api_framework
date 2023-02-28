@@ -7,7 +7,7 @@ from jsonschema import validate
 from jsonschema.exceptions import ValidationError
 import uuid
 
-df = pd.read_excel("/home/andres/Documents/skripsi/python-bdd/input/Test Scenario Payment Gateway Midtrans copy.xlsx", index_col=0)
+df = pd.read_excel("/home/andres/Documents/skripsi/python-bdd/input/test_case.xlsx", index_col=0)
 
 @given("Prepare testing request data and headers")
 def prepare_testing_request_data_and_headers(context):
@@ -57,9 +57,11 @@ def prepare_testing_request_data_and_headers(context):
 def client_send_request_data(context):
     start_time = time.time()
     context.result = []
+    context.api_urls = []
 
     for scenario in context.scenarios:
         currentRequest = context.data_prep.get(scenario)
+        context.api_urls.append(currentRequest["api_url"])
         headers_req = {} if not type(currentRequest['headers']) == str else ast.literal_eval(currentRequest["headers"])
         res = {}
 
@@ -90,16 +92,11 @@ def system_checks_json_schema(context):
         except ValidationError as ex:
             context.status.append(False)
 
-    context.api_urls = df["API URL"].values.tolist()
-    context.methods = df["Method"].values.tolist()
-    context.scenarios = df["Scenario"].values.tolist()
-    context.exptResult = df["Expected result"].values.tolist()
-    context.headers = df["Headers"].values.tolist()
-
 @then("System generate report")
 def system_generate_report(context):
     actual_result = []
     ext_times = []
+
     for d in context.result:
         actual_result.append(d.get("response"))
         ext_times.append(d.get("execution_time"))
@@ -107,5 +104,7 @@ def system_generate_report(context):
     df["Status"] = context.status
     df["Response time"] = ext_times
     df["Actual result"] = actual_result
+    df["API URL"] = context.api_urls
 
-    df.to_excel(f"./output/{str(time.time()).split('.')[0]}_testReport.xlsx",index=True)
+    df.to_excel(f"./output/public/testReport.xlsx",index=True)
+    df.to_json(f"./output/src/data/testReport.json",index=True)

@@ -70,10 +70,10 @@ def client_send_request_data(context):
             currentRequest['headers']) == str else ast.literal_eval(currentRequest["headers"])
         res = {}
 
-        if (currentRequest["method"] == "POST"):
+        if (str(currentRequest["method"]).lower() == "post"):
             res = requests.post(
                 url=currentRequest["api_url"], headers=headers_req, data=currentRequest["reqBody"]).json()
-        elif (currentRequest["method"] == "GET"):
+        elif (str(currentRequest["method"]).lower() == "get"):
             res = requests.get(
                 url=currentRequest["api_url"], headers=headers_req).json()
 
@@ -101,10 +101,12 @@ def system_checks_json_schema(context):
         except ValidationError as ex:
             context.status.append(False)
 
+
 @then("System generate report")
 def system_generate_report(context):
     actual_result = []
     ext_times = []
+    print(context.api_urls)
 
     for d in context.result:
         actual_result.append(d.get("response"))

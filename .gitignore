@@ -1,2 +1,4 @@
 output/node_modules
 output/package-lock.json
+data.txt
+log.txt

@@ -7,7 +7,9 @@ from jsonschema import validate
 from jsonschema.exceptions import ValidationError
 import uuid
 
-df = pd.read_excel("/home/andres/Documents/skripsi/python-bdd/input/test_case.xlsx", index_col=0)
+df = pd.read_excel(
+    "/home/andres/Documents/skripsi/python-bdd/input/test_case.xlsx", index_col=0)
+
 
 @given("Prepare testing request data and headers")
 def prepare_testing_request_data_and_headers(context):
@@ -22,20 +24,21 @@ def prepare_testing_request_data_and_headers(context):
     context.data_prep = {}
     for i in range(0, df.shape[0]):
         context.data_prep[context.scenarios[i]] = {
-            "api_url" : context.api_urls[i],
-            "method":context.methods[i],
+            "api_url": context.api_urls[i],
+            "method": context.methods[i],
             "reqBody": context.body[i],
             "exptResult": context.exptResult[i],
-            "headers":context.headers[i],
+            "headers": context.headers[i],
             "query": context.qData[i]
         }
 
     for scenario in context.scenarios:
         api_url = context.data_prep.get(scenario)["api_url"]
 
-        req_body = {} if not type(context.data_prep.get(scenario)["reqBody"]) == str else context.data_prep.get(scenario)["reqBody"]
+        req_body = {} if not type(context.data_prep.get(
+            scenario)["reqBody"]) == str else context.data_prep.get(scenario)["reqBody"]
 
-        if("{{$uuid}}" in req_body):
+        if ("{{$uuid}}" in req_body):
             req_body = req_body.replace("{{$uuid}}", str(uuid.uuid4()))
 
         context.data_prep.get(scenario)["reqBody"] = req_body
@@ -46,12 +49,13 @@ def prepare_testing_request_data_and_headers(context):
             for url in urlList:
                 if "}}" in url:
                     params.append(url.split("}}")[0])
-        
 
         for param in params:
-            api_url = api_url.replace('{{' + param + '}}' , str(ast.literal_eval(context.data_prep.get(scenario)["query"]).get(param)))
+            api_url = api_url.replace(
+                '{{' + param + '}}', str(ast.literal_eval(context.data_prep.get(scenario)["query"]).get(param)))
 
         context.data_prep.get(scenario)["api_url"] = api_url
+
 
 @when("Client send request data")
 def client_send_request_data(context):
@@ -62,23 +66,27 @@ def client_send_request_data(context):
     for scenario in context.scenarios:
         currentRequest = context.data_prep.get(scenario)
         context.api_urls.append(currentRequest["api_url"])
-        headers_req = {} if not type(currentRequest['headers']) == str else ast.literal_eval(currentRequest["headers"])
+        headers_req = {} if not type(
+            currentRequest['headers']) == str else ast.literal_eval(currentRequest["headers"])
         res = {}
 
-        if(currentRequest["method"] == "POST"):
-            res = requests.post(url=currentRequest["api_url"], headers=headers_req, data=currentRequest["reqBody"]).json()
-        elif(currentRequest["method"] == "GET"):
-            res = requests.get(url=currentRequest["api_url"], headers=headers_req).json()
-        
+        if (currentRequest["method"] == "POST"):
+            res = requests.post(
+                url=currentRequest["api_url"], headers=headers_req, data=currentRequest["reqBody"]).json()
+        elif (currentRequest["method"] == "GET"):
+            res = requests.get(
+                url=currentRequest["api_url"], headers=headers_req).json()
+
         end_time = time.time()
         ext_time = end_time - start_time
         context.result.append({
-            "response" : res,
+            "response": res,
             "execution_time": ext_time
         })
 
         start_time = time.time()
-            
+
+
 @then("System checks json schema")
 def system_checks_json_schema(context):
     context.status = []
@@ -88,7 +96,8 @@ def system_checks_json_schema(context):
         print("=" * 60 + "RESPONSE" + "=" * 60)
         print(res)
         try:
-            context.status.append(validate(instance=res, schema=schema) == None)
+            context.status.append(
+                validate(instance=res, schema=schema) == None)
         except ValidationError as ex:
             context.status.append(False)
 
@@ -106,5 +115,5 @@ def system_generate_report(context):
     df["Actual result"] = actual_result
     df["API URL"] = context.api_urls
 
-    df.to_excel(f"./output/public/testReport.xlsx",index=True)
-    df.to_json(f"./output/src/data/testReport.json",index=True)
+    df.to_excel(f"./output/public/testReport.xlsx", index=True)
+    df.to_json(f"./output/src/data/testReport.json", index=True)

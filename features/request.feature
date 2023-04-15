@@ -1,5 +1,5 @@
-Feature: Feature name
-    Scenario: Scenario name
+Feature: REST API Automation
+    Scenario: Run REST API automation framework
     Given Prepare testing request data and headers
     When Client send request data
     Then System checks json schema
